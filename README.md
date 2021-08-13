@@ -1,7 +1,9 @@
 # fastjson
-10x faster then standard lib &amp; dynamic set json
+### 10x faster then standard lib &amp; dynamic set json
+### examples
 
 ```
+
 go get github.com/daqnext/fastjson
 
 import 
@@ -9,11 +11,6 @@ import
     FastJson "github.com/daqnext/fastjson"
 )
 
-```
-
-## examples
-
-```
 
 //////////////////////////////////////////////////////////////////
 
