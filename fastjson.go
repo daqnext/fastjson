@@ -136,6 +136,9 @@ func NewFromFile(filepath string) (*FastJson, error) {
 	if err != nil {
 		return nil, err
 	}
+	if len(jdata) == 0 {
+		jdata = []byte("{}")
+	}
 	return &FastJson{content: jdata}, nil
 }
 
