@@ -2,12 +2,31 @@ package fj
 
 import (
 	"io/ioutil"
+	"os"
+	"strconv"
 
 	jsonparser "github.com/buger/jsonparser"
 )
 
 type FastJson struct {
 	content []byte
+}
+
+func (fj *FastJson) GetContent() []byte {
+	return fj.content
+}
+
+func (fj *FastJson) ClearFileAndOutput(fileurl string) error {
+	desFile, err := os.OpenFile(fileurl, os.O_RDWR, 0666)
+	if err != nil {
+		return err
+	}
+	defer desFile.Close()
+	desFile.Truncate(0)
+	desFile.Seek(0, 0)
+	desFile.Write(fj.content)
+	desFile.Sync()
+	return nil
 }
 
 func GetString(data []byte, keys ...string) (val string, err error) {
@@ -64,8 +83,45 @@ func Set(data []byte, setValue []byte, keys ...string) (value []byte, err error)
 	return jsonparser.Set(data, setValue, keys...)
 }
 
-func (fj *FastJson) Set(setValue []byte, keys ...string) (value []byte, err error) {
-	return Set(fj.content, setValue, keys...)
+func (fj *FastJson) Set(setValue []byte, keys ...string) error {
+	result, err := Set(fj.content, setValue, keys...)
+	if err != nil {
+		return err
+	}
+	fj.content = result
+	return nil
+}
+
+func SetString(data []byte, val string, keys ...string) (value []byte, err error) {
+	return Set(data, []byte(val), keys...)
+}
+
+func (fj *FastJson) SetString(val string, keys ...string) error {
+	return fj.Set([]byte(val), keys...)
+}
+
+func SetInt(data []byte, val int, keys ...string) (value []byte, err error) {
+	return Set(data, []byte(strconv.Itoa(val)), keys...)
+}
+
+func (fj *FastJson) SetInt(val int, keys ...string) error {
+	return fj.Set([]byte(strconv.Itoa(val)), keys...)
+}
+
+func SetBoolean(data []byte, val bool, keys ...string) (value []byte, err error) {
+	return Set(data, []byte(strconv.FormatBool(val)), keys...)
+}
+
+func (fj *FastJson) SetBoolean(val bool, keys ...string) error {
+	return fj.Set([]byte(strconv.FormatBool(val)), keys...)
+}
+
+func SetFloat(data []byte, val float64, keys ...string) (value []byte, err error) {
+	return Set(data, []byte(strconv.FormatFloat(val, 'E', -1, 64)), keys...)
+}
+
+func (fj *FastJson) SetFloat(val float64, keys ...string) error {
+	return fj.Set([]byte(strconv.FormatFloat(val, 'f', -1, 64)), keys...)
 }
 
 func Delete(data []byte, keys ...string) []byte {

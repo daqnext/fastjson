@@ -83,3 +83,20 @@ func TestObjectItem(t *testing.T) {
 		}
 	}
 }
+
+func TestSetItemToFile(t *testing.T) {
+	fj, err := FastJson.NewFromFile("../test.json")
+	if err == nil {
+		fj.SetFloat(123.123, "person", "weight")
+		fj.ClearFileAndOutput("../test.json")
+	}
+
+	fj2, err2 := FastJson.NewFromFile("../test.json")
+	if err2 == nil {
+		r, _ := fj2.GetFloat("person", "weight")
+		if r != 123.123 {
+			t.Error("read or set float error")
+		}
+	}
+
+}
