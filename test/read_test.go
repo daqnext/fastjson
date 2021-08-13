@@ -1,22 +1,12 @@
-# fastjson
-10x faster then standard lib &amp; dynamic set json
+package test
 
-```
-go get github.com/daqnext/fastjson
+import (
+	"testing"
 
-import 
-(
-    FastJson "github.com/daqnext/fastjson"
+	FastJson "github.com/daqnext/fastjson"
 )
 
-```
-
-## examples
-
-```
-
-//////////////////////////////////////////////////////////////////
-
+func TestFromFile(t *testing.T) {
 	fj, err := FastJson.NewFromFile("../test.json")
 	if err == nil {
 		result, _ := fj.GetString("company", "name")
@@ -25,9 +15,9 @@ import
 		}
 
 	}
+}
 
-//////////////////////////////////////////////////////////////////
-
+func TestRead(t *testing.T) {
 	fj, err := FastJson.NewFromFile("../test.json")
 	if err == nil {
 
@@ -46,10 +36,9 @@ import
 			t.Error("read int error")
 		}
 	}
+}
 
-//////////////////////////////////////////////////////////////////
-
-
+func TestArray(t *testing.T) {
 	fj, err := FastJson.NewFromFile("../test.json")
 	if err == nil {
 		fj.ArrayEach(func(value []byte, offset int, err error) {
@@ -59,10 +48,9 @@ import
 			}
 		}, "person", "avatars")
 	}
+}
 
-//////////////////////////////////////////////////////////////////
-
-
+func TestArrayItem(t *testing.T) {
 	fj, err := FastJson.NewFromFile("../test.json")
 	if err == nil {
 		link, _ := fj.GetString("person", "avatars", "[0]", "url")
@@ -70,9 +58,9 @@ import
 			t.Error("read  array error")
 		}
 	}
+}
 
-//////////////////////////////////////////////////////////////////
-
+func TestObject(t *testing.T) {
 	fj, err := FastJson.NewFromFile("../test.json")
 	if err == nil {
 		fj.ObjectEach(func(key []byte, value []byte, offset int) error {
@@ -84,10 +72,9 @@ import
 			return nil
 		}, "person", "name")
 	}
+}
 
-//////////////////////////////////////////////////////////////////
-
-
+func TestObjectItem(t *testing.T) {
 	fj, err := FastJson.NewFromFile("../test.json")
 	if err == nil {
 		last, _ := fj.GetString("person", "name", "last")
@@ -95,7 +82,4 @@ import
 			t.Error("read  object item error")
 		}
 	}
-
-//////////////////////////////////////////////////////////////////
-
-```
+}
