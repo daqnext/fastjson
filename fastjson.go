@@ -104,8 +104,8 @@ func (fj *FastJson) SetString(val string, keys ...string) error {
 	return fj.Set([]byte(val), keys...)
 }
 
-func SetInt(data []byte, val int, keys ...string) (value []byte, err error) {
-	return Set(data, []byte(strconv.Itoa(val)), keys...)
+func SetInt(data []byte, val int64, keys ...string) (value []byte, err error) {
+	return Set(data, []byte(strconv.FormatInt(val, 10)), keys...)
 }
 
 func (fj *FastJson) SetInt(val int, keys ...string) error {
