@@ -108,8 +108,8 @@ func SetInt(data []byte, val int64, keys ...string) (value []byte, err error) {
 	return Set(data, []byte(strconv.FormatInt(val, 10)), keys...)
 }
 
-func (fj *FastJson) SetInt(val int, keys ...string) error {
-	return fj.Set([]byte(strconv.Itoa(val)), keys...)
+func (fj *FastJson) SetInt(val int64, keys ...string) error {
+	return fj.Set([]byte(strconv.FormatInt(val, 10)), keys...)
 }
 
 func SetBoolean(data []byte, val bool, keys ...string) (value []byte, err error) {
