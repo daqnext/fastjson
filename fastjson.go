@@ -16,6 +16,10 @@ func (fj *FastJson) GetContent() []byte {
 	return fj.content
 }
 
+func (fj *FastJson) GetContentAsString() string {
+	return string(fj.content)
+}
+
 func (fj *FastJson) ClearFileAndOutput(fileurl string) error {
 	desFile, err := os.OpenFile(fileurl, os.O_RDWR, 0666)
 	if err != nil {

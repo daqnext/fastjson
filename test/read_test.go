@@ -17,6 +17,26 @@ func TestFromFile(t *testing.T) {
 	}
 }
 
+func TestFromString(t *testing.T) {
+	fj, err := FastJson.NewFromString("{\"test\":123}")
+	if err == nil {
+		result, _ := fj.GetInt("test")
+		if result != 123 {
+			t.Error("read error")
+		}
+	}
+}
+
+func TestGetContentAsString(t *testing.T) {
+	fj, err := FastJson.NewFromString("{\"test\":123}")
+	if err == nil {
+		result := fj.GetContentAsString()
+		if result != "{\"test\":123}" {
+			t.Error("read error")
+		}
+	}
+}
+
 func TestRead(t *testing.T) {
 	fj, err := FastJson.NewFromFile("../test.json")
 	if err == nil {
