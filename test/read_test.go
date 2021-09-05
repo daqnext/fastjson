@@ -13,7 +13,6 @@ func TestFromFile(t *testing.T) {
 		if result == "acm" {
 			t.Error("read error")
 		}
-
 	}
 }
 

@@ -21,7 +21,7 @@ func (fj *FastJson) GetContentAsString() string {
 }
 
 func (fj *FastJson) ClearFileAndOutput(fileurl string) error {
-	desFile, err := os.OpenFile(fileurl, os.O_RDWR, 0666)
+	desFile, err := os.OpenFile(fileurl, os.O_RDWR|os.O_CREATE, 0666)
 	if err != nil {
 		return err
 	}
@@ -38,7 +38,8 @@ func GetString(data []byte, keys ...string) (val string, err error) {
 }
 
 func (fj *FastJson) GetString(keys ...string) (val string, err error) {
-	return GetString(fj.content, keys...)
+	result, err := GetString(fj.content, keys...)
+	return result, err
 }
 
 func GetInt(data []byte, keys ...string) (val int64, err error) {
@@ -88,7 +89,9 @@ func Set(data []byte, setValue []byte, keys ...string) (value []byte, err error)
 }
 
 func (fj *FastJson) Set(setValue []byte, keys ...string) error {
+
 	result, err := Set(fj.content, setValue, keys...)
+
 	if err != nil {
 		return err
 	}
@@ -101,7 +104,7 @@ func SetString(data []byte, val string, keys ...string) (value []byte, err error
 }
 
 func (fj *FastJson) SetString(val string, keys ...string) error {
-	return fj.Set([]byte(val), keys...)
+	return fj.Set([]byte(strconv.Quote(val)), keys...)
 }
 
 func SetInt(data []byte, val int64, keys ...string) (value []byte, err error) {
