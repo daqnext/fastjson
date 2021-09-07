@@ -4,6 +4,7 @@ import (
 	"io/ioutil"
 	"os"
 	"strconv"
+	"strings"
 
 	jsonparser "github.com/daqnext/jsonparser"
 )
@@ -115,13 +116,13 @@ func (fj *FastJson) ObjectEach(itemfunc func(key []byte, value []byte, offset in
 	}, keys...)
 }
 
-func set(data []byte, setValue []byte, keys ...string) (value []byte, err error) {
+func Set(data []byte, setValue []byte, keys ...string) (value []byte, err error) {
 	return jsonparser.Set(data, setValue, keys...)
 }
 
-func (fj *FastJson) set(setValue []byte, keys ...string) error {
+func (fj *FastJson) Set(setValue []byte, keys ...string) error {
 
-	result, err := set(fj.content, setValue, keys...)
+	result, err := Set(fj.content, setValue, keys...)
 
 	if err != nil {
 		return err
@@ -131,7 +132,18 @@ func (fj *FastJson) set(setValue []byte, keys ...string) error {
 }
 
 func SetString(data []byte, val string, keys ...string) (value []byte, err error) {
-	return set(data, []byte(val), keys...)
+	return Set(data, []byte(val), keys...)
+}
+
+func SetStringArray(data []byte, vals []string, keys ...string) (value []byte, err error) {
+
+	composedValue := "["
+	for _, val := range vals {
+		composedValue = composedValue + strconv.Quote(val) + ","
+	}
+	composedValue = strings.Trim(composedValue, ",")
+	composedValue = composedValue + "]"
+	return Set(data, []byte(composedValue), keys...)
 }
 
 func (fj *FastJson) SetString(val string, keys ...string) error {
@@ -140,11 +152,37 @@ func (fj *FastJson) SetString(val string, keys ...string) error {
 		longkey = longkey + keys[i]
 	}
 	fj.cacheString[longkey] = val
-	return fj.set([]byte(strconv.Quote(val)), keys...)
+	return fj.Set([]byte(strconv.Quote(val)), keys...)
+}
+
+func (fj *FastJson) SetStringArray(vals []string, keys ...string) error {
+	longkey := ""
+	for i := 0; i < len(keys); i++ {
+		longkey = longkey + keys[i]
+	}
+
+	composedValue := "["
+	for _, val := range vals {
+		composedValue = composedValue + strconv.Quote(val) + ","
+	}
+	composedValue = strings.Trim(composedValue, ",")
+	composedValue = composedValue + "]"
+	return fj.Set([]byte(composedValue), keys...)
 }
 
 func SetInt(data []byte, val int64, keys ...string) (value []byte, err error) {
-	return set(data, []byte(strconv.FormatInt(val, 10)), keys...)
+	return Set(data, []byte(strconv.FormatInt(val, 10)), keys...)
+}
+
+func SetIntArray(data []byte, vals []int64, keys ...string) (value []byte, err error) {
+
+	composedValue := "["
+	for _, val := range vals {
+		composedValue = composedValue + strconv.FormatInt(val, 10) + ","
+	}
+	composedValue = strings.Trim(composedValue, ",")
+	composedValue = composedValue + "]"
+	return Set(data, []byte(composedValue), keys...)
 }
 
 func (fj *FastJson) SetInt(val int64, keys ...string) error {
@@ -153,11 +191,26 @@ func (fj *FastJson) SetInt(val int64, keys ...string) error {
 		longkey = longkey + keys[i]
 	}
 	fj.cacheInt64[longkey] = val
-	return fj.set([]byte(strconv.FormatInt(val, 10)), keys...)
+	return fj.Set([]byte(strconv.FormatInt(val, 10)), keys...)
+}
+
+func (fj *FastJson) SetIntArray(vals []int64, keys ...string) error {
+	longkey := ""
+	for i := 0; i < len(keys); i++ {
+		longkey = longkey + keys[i]
+	}
+
+	composedValue := "["
+	for _, val := range vals {
+		composedValue = composedValue + strconv.FormatInt(val, 10) + ","
+	}
+	composedValue = strings.Trim(composedValue, ",")
+	composedValue = composedValue + "]"
+	return fj.Set([]byte(composedValue), keys...)
 }
 
 func SetBoolean(data []byte, val bool, keys ...string) (value []byte, err error) {
-	return set(data, []byte(strconv.FormatBool(val)), keys...)
+	return Set(data, []byte(strconv.FormatBool(val)), keys...)
 }
 
 func (fj *FastJson) SetBoolean(val bool, keys ...string) error {
@@ -166,11 +219,23 @@ func (fj *FastJson) SetBoolean(val bool, keys ...string) error {
 		longkey = longkey + keys[i]
 	}
 	fj.cacheBool[longkey] = val
-	return fj.set([]byte(strconv.FormatBool(val)), keys...)
+	return fj.Set([]byte(strconv.FormatBool(val)), keys...)
 }
 
 func SetFloat(data []byte, val float64, keys ...string) (value []byte, err error) {
-	return set(data, []byte(strconv.FormatFloat(val, 'E', -1, 64)), keys...)
+	return Set(data, []byte(strconv.FormatFloat(val, 'E', -1, 64)), keys...)
+}
+
+func SetFloatArray(data []byte, vals []float64, keys ...string) (value []byte, err error) {
+
+	composedValue := "["
+	for _, val := range vals {
+		composedValue = composedValue + strconv.FormatFloat(val, 'f', -1, 64) + ","
+	}
+	composedValue = strings.Trim(composedValue, ",")
+	composedValue = composedValue + "]"
+
+	return Set(data, []byte(composedValue), keys...)
 }
 
 func (fj *FastJson) SetFloat(val float64, keys ...string) error {
@@ -179,7 +244,22 @@ func (fj *FastJson) SetFloat(val float64, keys ...string) error {
 		longkey = longkey + keys[i]
 	}
 	fj.cacheFloat[longkey] = val
-	return fj.set([]byte(strconv.FormatFloat(val, 'f', -1, 64)), keys...)
+	return fj.Set([]byte(strconv.FormatFloat(val, 'f', -1, 64)), keys...)
+}
+
+func (fj *FastJson) SetFloatArray(vals []float64, keys ...string) error {
+	longkey := ""
+	for i := 0; i < len(keys); i++ {
+		longkey = longkey + keys[i]
+	}
+
+	composedValue := "["
+	for _, val := range vals {
+		composedValue = composedValue + strconv.FormatFloat(val, 'f', -1, 64) + ","
+	}
+	composedValue = strings.Trim(composedValue, ",")
+	composedValue = composedValue + "]"
+	return fj.Set([]byte(composedValue), keys...)
 }
 
 func Delete(data []byte, keys ...string) []byte {

@@ -128,3 +128,18 @@ func TestSetItemToFile(t *testing.T) {
 	}
 
 }
+
+func TestSetArray(t *testing.T) {
+	fj, err := FastJson.NewFromFile("../test.json")
+	if err == nil {
+		fj.SetIntArray([]int64{1, 2, 35, 432, 123}, "x")
+		fj.SetInt(124, "x")
+		fj.SetFloatArray([]float64{1.12, 0.132, 3.5, 432, 123}, "x")
+
+		err := fj.ClearFileAndOutput("../test2.json")
+		if err != nil {
+			t.Error("something wrong", err)
+		}
+	}
+
+}
