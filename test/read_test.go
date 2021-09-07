@@ -54,6 +54,12 @@ func TestRead(t *testing.T) {
 		if flnum != 109 {
 			t.Error("read int error")
 		}
+
+		fj.Delete("person", "github", "followers")
+		_, errget := fj.GetInt("person", "github", "followers")
+		if errget == nil {
+			t.Error("delete error")
+		}
 	}
 }
 
