@@ -1,0 +1,20 @@
+{
+    "person": {
+      "name": {
+        "first": "Leonid",
+        "last": "Bugaev",
+        "fullName": "Leonid Bugaev"
+      },
+      "weight":123456.123,
+      "github": {
+        "handle": "buger",
+        "followers": 109
+      },
+      "avatars": [
+        { "url": "link1", "type": "thumbnail" }
+      ]
+    },
+    "company": {
+      "name": "Acme"
+    }
+  ,"x":[1.12,0.132,3.5,432,123]}

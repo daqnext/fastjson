@@ -290,10 +290,10 @@ func NewFromFile(filepath string) (*FastJson, error) {
 	return &FastJson{jdata, make(map[string]string), make(map[string]int64), map[string]bool{}, make(map[string]float64)}, nil
 }
 
-func NewFromString(strcontent string) (*FastJson, error) {
-	return &FastJson{[]byte(strcontent), make(map[string]string), make(map[string]int64), map[string]bool{}, make(map[string]float64)}, nil
+func NewFromString(strcontent string) *FastJson {
+	return &FastJson{[]byte(strcontent), make(map[string]string), make(map[string]int64), map[string]bool{}, make(map[string]float64)}
 }
 
-func NewFromBytes(content []byte) (*FastJson, error) {
-	return &FastJson{content, make(map[string]string), make(map[string]int64), map[string]bool{}, make(map[string]float64)}, nil
+func NewFromBytes(content []byte) *FastJson {
+	return &FastJson{content, make(map[string]string), make(map[string]int64), map[string]bool{}, make(map[string]float64)}
 }
