@@ -149,15 +149,5 @@ func TestGetIntArray(t *testing.T) {
 		} else {
 			t.Log(result)
 		}
-
-		//fj.SetInt64Array([]int64{(int64(11234213423424)), int64(123421341234123424)}, "x")
-		//fj.SetInt(124, "x")
-		//fj.SetFloatArray([]float64{1.12, 0.132, 3.5, 432, 123}, "x")
-
-		// err := fj.ClearFileAndOutput("../test2.json")
-		// if err != nil {
-		// 	t.Error("something wrong", err)
-		// }
 	}
-
 }

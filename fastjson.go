@@ -17,6 +17,11 @@ type FastJson struct {
 	cacheInt     map[string]int
 	cacheBool    map[string]bool
 	cacheFloat64 map[string]float64
+
+	cacheStringArray  map[string][]string
+	cacheIntArray     map[string][]int
+	cacheInt64Array   map[string][]int64
+	cacheFloat64Array map[string][]float64
 }
 
 func (fj *FastJson) GetContent() []byte {
@@ -335,6 +340,8 @@ func (fj *FastJson) SetStringArray(vals []string, keys ...string) error {
 	}
 	composedValue = strings.Trim(composedValue, ",")
 	composedValue = composedValue + "]"
+
+	fj.cacheStringArray[longkey] = vals
 	return fj.Set([]byte(composedValue), keys...)
 }
 
@@ -374,6 +381,7 @@ func (fj *FastJson) SetInt64Array(vals []int64, keys ...string) error {
 	}
 	composedValue = strings.Trim(composedValue, ",")
 	composedValue = composedValue + "]"
+	fj.cacheInt64Array[longkey] = vals
 	return fj.Set([]byte(composedValue), keys...)
 }
 
@@ -413,6 +421,7 @@ func (fj *FastJson) SetIntArray(vals []int, keys ...string) error {
 	}
 	composedValue = strings.Trim(composedValue, ",")
 	composedValue = composedValue + "]"
+	fj.cacheIntArray[longkey] = vals
 	return fj.Set([]byte(composedValue), keys...)
 }
 
@@ -429,7 +438,7 @@ func (fj *FastJson) SetBoolean(val bool, keys ...string) error {
 	return fj.Set([]byte(strconv.FormatBool(val)), keys...)
 }
 
-func SetFloat(data []byte, val float64, keys ...string) (value []byte, err error) {
+func SetFloat64(data []byte, val float64, keys ...string) (value []byte, err error) {
 	return Set(data, []byte(strconv.FormatFloat(val, 'E', -1, 64)), keys...)
 }
 
@@ -466,6 +475,7 @@ func (fj *FastJson) SetFloat64Array(vals []float64, keys ...string) error {
 	}
 	composedValue = strings.Trim(composedValue, ",")
 	composedValue = composedValue + "]"
+	fj.cacheFloat64Array[longkey] = vals
 	return fj.Set([]byte(composedValue), keys...)
 }
 
@@ -495,13 +505,16 @@ func NewFromFile(filepath string) (*FastJson, error) {
 	if len(jdata) == 0 {
 		jdata = []byte("{}")
 	}
-	return &FastJson{jdata, make(map[string]string), make(map[string]int64), make(map[string]int), map[string]bool{}, make(map[string]float64)}, nil
+	return &FastJson{jdata, make(map[string]string), make(map[string]int64), make(map[string]int), map[string]bool{},
+		make(map[string]float64), make(map[string][]string), make(map[string][]int), make(map[string][]int64), make(map[string][]float64)}, nil
 }
 
 func NewFromString(strcontent string) *FastJson {
-	return &FastJson{[]byte(strcontent), make(map[string]string), make(map[string]int64), make(map[string]int), map[string]bool{}, make(map[string]float64)}
+	return &FastJson{[]byte(strcontent), make(map[string]string), make(map[string]int64), make(map[string]int), map[string]bool{}, make(map[string]float64),
+		make(map[string][]string), make(map[string][]int), make(map[string][]int64), make(map[string][]float64)}
 }
 
 func NewFromBytes(content []byte) *FastJson {
-	return &FastJson{content, make(map[string]string), make(map[string]int64), make(map[string]int), map[string]bool{}, make(map[string]float64)}
+	return &FastJson{content, make(map[string]string), make(map[string]int64), make(map[string]int), map[string]bool{}, make(map[string]float64),
+		make(map[string][]string), make(map[string][]int), make(map[string][]int64), make(map[string][]float64)}
 }
