@@ -108,7 +108,7 @@ func TestObjectItem(t *testing.T) {
 func TestSetItemToFile(t *testing.T) {
 	fj, err := FastJson.NewFromFile("../test.json")
 	if err == nil {
-		fj.SetFloat(123456.123, "person", "weight")
+		fj.SetFloat64(123456.123, "person", "weight")
 		err := fj.ClearFileAndOutput("../test.json")
 		if err != nil {
 			t.Error("something wrong", err)
@@ -117,7 +117,7 @@ func TestSetItemToFile(t *testing.T) {
 
 	fj2, err2 := FastJson.NewFromFile("../test.json")
 	if err2 == nil {
-		r, _ := fj2.GetFloat("person", "weight")
+		r, _ := fj2.GetFloat64("person", "weight")
 		if r != 123456.123 {
 			t.Error("read or set float error")
 		}
@@ -128,14 +128,36 @@ func TestSetItemToFile(t *testing.T) {
 func TestSetArray(t *testing.T) {
 	fj, err := FastJson.NewFromFile("../test.json")
 	if err == nil {
-		fj.SetIntArray([]int64{1, 2, 35, 432, 123}, "x")
-		fj.SetInt(124, "x")
-		fj.SetFloatArray([]float64{1.12, 0.132, 3.5, 432, 123}, "x")
+		fj.SetInt64Array([]int64{(int64(11234213423424)), int64(123421341234123424)}, "x")
+		//fj.SetInt(124, "x")
+		//fj.SetFloatArray([]float64{1.12, 0.132, 3.5, 432, 123}, "x")
 
 		err := fj.ClearFileAndOutput("../test2.json")
 		if err != nil {
 			t.Error("something wrong", err)
 		}
+	}
+
+}
+
+func TestGetIntArray(t *testing.T) {
+	fj, err := FastJson.NewFromFile("../test.json")
+	if err == nil {
+		result, err := fj.GetIntArray("x")
+		if err != nil {
+			t.Error("something wrong", err)
+		} else {
+			t.Log(result)
+		}
+
+		//fj.SetInt64Array([]int64{(int64(11234213423424)), int64(123421341234123424)}, "x")
+		//fj.SetInt(124, "x")
+		//fj.SetFloatArray([]float64{1.12, 0.132, 3.5, 432, 123}, "x")
+
+		// err := fj.ClearFileAndOutput("../test2.json")
+		// if err != nil {
+		// 	t.Error("something wrong", err)
+		// }
 	}
 
 }
