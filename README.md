@@ -55,7 +55,7 @@ if err == nil {
 		t.Error("get boolean error")
 	}
 
-	flnum, _ := fj.GetInt("person", "github", "followers")
+	flnum, _ := fj.GetInt64("person", "github", "followers")
 	if flnum != 109 {
 		t.Error("read int error")
 	}
@@ -114,13 +114,13 @@ if err == nil {
 
 fj, err := FastJson.NewFromFile("../test.json")
 if err == nil {
-	fj.SetFloat(123.123, "person", "weight")
+	fj.SetFloat64(123.123, "person", "weight")
 	fj.ClearFileAndOutput("../test.json")
 }
 
 fj2, err2 := FastJson.NewFromFile("../test.json")
 if err2 == nil {
-	r, _ := fj2.GetFloat("person", "weight")
+	r, _ := fj2.GetFloat64("person", "weight")
 	if r != 123.123 {
 		t.Error("read or set float error")
 	}
